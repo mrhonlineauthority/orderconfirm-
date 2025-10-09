@@ -10,7 +10,7 @@
   /* Reset & Fonts */
   *{box-sizing:border-box;margin:0;padding:0;}
   body {
-    font-family: 'Times New Roman', times-new-roman;
+    font-family: 'Times New Roman, times-new-roman;
     background: linear-gradient(120deg, #ffe6f0, #f6f6f6);
     display: flex;
     justify-content: center;
@@ -168,7 +168,7 @@
     <div class="input-group"><label>উপজেলা</label><input type="text" name="upazila" required></div>
     <div class="input-group"><label>ডেলিভারি ঠিকানা</label><textarea name="address" required></textarea></div>
     <div class="input-group"><label>কালার/সাইজ (অপশনাল)</label><input type="text" name="colorSize"></div>
-    <div class="input-group"><label>দাম</label><input type="text" name="price" required></div>
+    <div class="input-group"><label>ডেলিভারি চার্জ</label><input type="text" name="price" required></div>
     <div class="input-group">
       <label>ডেলিভারি পেমেন্ট</label>
       <select name="payment" required>
@@ -213,7 +213,7 @@ document.getElementById("orderForm").addEventListener("submit", function(e){
     html += `<p><strong>উপজেলা:</strong> ${formData.upazila}</p>`;
     html += `<p><strong>ঠিকানা:</strong> ${formData.address}</p>`;
     if(formData.colorSize) html += `<p><strong>কালার/সাইজ:</strong> ${formData.colorSize}</p>`;
-    html += `<p><strong>দাম:</strong> ${formData.price}</p>`;
+    html += `<p><strong>ডেলিভারি চার্জ:</strong> ${formData.price}</p>`;
     html += `<p><strong>পেমেন্ট:</strong> ${formData.payment}</p>`;
     if(formData.productLink) html += `<p><strong>প্রোডাক্ট লিংক:</strong> <a href="${formData.productLink}" target="_blank">${formData.productLink}</a></p>`;
     detailsDiv.innerHTML = html;
@@ -229,4 +229,4 @@ document.getElementById("closeBtn").addEventListener("click", function(e){
 </script>
 
 </body>
-  </html>
+</html>
