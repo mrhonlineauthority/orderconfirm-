@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>M.R.H Micro Job Site</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff4da6;
+      --bg: #f5f5f5;
+      --text: #333;
+    }
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 95%;
+      max-width: 700px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .title {
+      text-align: center;
+      font-size: 1.8rem;
+      color: var(--primary);
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .help-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: var(--primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .text-box {
+      background: #f9f9f9;
+      border: 2px solid var(--primary);
+      padding: 15px;
+      border-radius: 10px;
+      position: relative;
+      min-height: 100px;
+      color: var(--text);
+      word-wrap: break-word;
+    }
+    .edit-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .editor-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+    .editor-toolbar button, .editor-toolbar input[type="color"], 
+    .editor-toolbar select {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .editor-toolbar select {
+      color: #000;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 6px;
+    }
+    .editor-toolbar button:hover {
+      background: #e43c91;
+    }
+    .edit-area {
+      width: 100%;
+      min-height: 150px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+      font-size: 1rem;
+      outline: none;
+      background: #fff;
+    }
+    .btn {
+      background: var(--primary);
+      color: white;
+      padding: 10px 15px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background: #e43c91;
+    }
+    .link-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .link-buttons a {
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      background: var(--primary);
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+    .link-buttons a:hover {
+      background: #e43c91;
+    }
+    @media (max-width: 480px) {
+      .title {
+        font-size: 1.4rem;
+      }
+      .link-buttons a {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Help Line Link -->
+    <a href="https://mrhonlineauthority.github.io/mrhhelplinehome/" target="_blank">
+      <i class="fa-solid fa-headset help-icon" title="Help Line"></i>
+    </a>
+
+    <div class="title">M.R.H Micro Job Site</div>
+
+    <div class="text-box" id="displayText">
+      এখানে আপনার লেখা দেখাবে...
+      <i class="fa-solid fa-pen-to-square edit-icon" onclick="requestPassword()"></i>
+    </div>
+
+    <div id="editSection" style="display:none;">
+      <div class="editor-toolbar">
+        <button type="button" onclick="format('bold')" title="Bold"><i class="fa-solid fa-bold"></i></button>
+        <button type="button" onclick="format('italic')" title="Italic"><i class="fa-solid fa-italic"></i></button>
+        <button type="button" onclick="format('underline')" title="Underline"><i class="fa-solid fa-underline"></i></button>
+        <button type="button" onclick="format('insertOrderedList')" title="Number List"><i class="fa-solid fa-list-ol"></i></button>
+        <button type="button" onclick="format('justifyLeft')" title="Align Left"><i class="fa-solid fa-align-left"></i></button>
+        <button type="button" onclick="format('justifyCenter')" title="Align Center"><i class="fa-solid fa-align-center"></i></button>
+        <button type="button" onclick="format('justifyRight')" title="Align Right"><i class="fa-solid fa-align-right"></i></button>
+        <input type="color" id="colorPicker" title="Text Color" onchange="changeColor(this.value)">
+        <button type="button" onclick="insertLink()" title="Insert Link"><i class="fa-solid fa-link"></i></button>
+        <select onchange="changeFont(this.value)" title="Font Family">
+          <option value="Poppins">Poppins</option>
+          <option value="Arial">Arial</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Noto Sans Bengali">Noto Sans Bengali</option>
+          <option value="SolaimanLipi">SolaimanLipi</option>
+        </select>
+        <select onchange="changeFontSize(this.value)" title="Font Size">
+          <option value="3">Normal</option>
+          <option value="4">Large</option>
+          <option value="5">Larger</option>
+          <option value="6">Extra Large</option>
+          <option value="7">Huge</option>
+        </select>
+      </div>
+      <div class="edit-area" id="editText" contenteditable="true"></div>
+      <button class="btn" onclick="saveText()">Save</button>
+    </div>
+
+    <div class="link-buttons">
+      <a href="#" target="_blank">Click Here 1</a>
+      <a href="#" target="_blank">Click Here 2</a>
+      <a href="#" target="_blank">Click Here 3</a>
+    </div>
+  </div>
+
+  <script>
+    const correctPassword = "16064154";
+    const displayText = document.getElementById("displayText");
+    const editSection = document.getElementById("editSection");
+    const editText = document.getElementById("editText");
+
+    window.onload = () => {
+      const saved = localStorage.getItem("jobTextFormatted");
+      if (saved) {
+        displayText.innerHTML = saved + `<i class="fa-solid fa-pen-to-square edit-icon" onclick="requestPassword()"></i>`;
+      }
+    }
+
+    function requestPassword() {
+      const pass = prompt("পাসওয়ার্ড দিন:");
+      if (pass === correctPassword) {
+        editText.innerHTML = displayText.innerHTML.replace(/<i.*<\/i>/, '');
+        editSection.style.display = "block";
+      } else if (pass !== null) {
+        alert("❌ ভুল পাসওয়ার্ড!");
+      }
+    }
+
+    function saveText() {
+      const newContent = editText.innerHTML.trim();
+      if (newContent !== "") {
+        displayText.innerHTML = newContent + `<i class="fa-solid fa-pen-to-square edit-icon" onclick="requestPassword()"></i>`;
+        localStorage.setItem("jobTextFormatted", newContent);
+        editSection.style.display = "none";
+        alert("✅ টেক্সট আপডেট করা হয়েছে!");
+      }
+    }
+
+    function format(command) {
+      document.execCommand(command, false, null);
+    }
+
+    function changeColor(color) {
+      document.execCommand('foreColor', false, color);
+    }
+
+    function insertLink() {
+      const url = prompt("লিংক দিন (https:// সহ):");
+      if (url) {
+        document.execCommand('createLink', false, url);
+      }
+    }
+
+    function changeFont(font) {
+      document.execCommand('fontName', false, font);
+    }
+
+    function changeFontSize(size) {
+      document.execCommand('fontSize', false, size);
+    }
+  </script>
+</body>
+      </html>
