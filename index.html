@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>অর্ডার ফর্ম</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  /* Reset & Fonts */
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body {
+    font-family: 'Noto Sans Bengali', sans-serif;
+    background: linear-gradient(120deg, #ffe6f0, #f6f6f6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  /* Form Card */
+  .form-container {
+    background: #fff;
+    padding: 60px 30px 30px 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    max-width: 450px;
+    width: 100%;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  .form-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 35px rgba(0,0,0,0.25);
+  }
+
+  h2 {
+    text-align: center;
+    color: #d60055;
+    margin-bottom: 30px;
+    font-size: 28px;
+  }
+
+  /* Input Group */
+  .input-group { margin-bottom: 18px; }
+  .input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #333;
+    font-weight: 500;
+  }
+  .input-group input, 
+  .input-group select, 
+  .input-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    transition: 0.3s;
+  }
+  .input-group input:focus,
+  .input-group select:focus,
+  .input-group textarea:focus {
+    border-color: #d60055;
+    box-shadow: 0 0 8px rgba(214,0,85,0.3);
+    outline: none;
+  }
+
+  /* Button */
+  .order-btn {
+    background: #d60055;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 12px;
+    font-size: 17px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+  }
+  .order-btn:hover {
+    background: #b00045;
+    transform: translateY(-2px);
+  }
+
+  /* Help Icon */
+  .help-icon {
+    position: absolute;
+    top: -25px;
+    right: 25px;
+    background: #d60055;
+    color: #fff;
+    font-size: 22px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .help-icon:hover {
+    background: #b00045;
+    transform: scale(1.15);
+  }
+
+  /* Success Box */
+  .success-box {
+    display:none;
+    background:white;
+    padding:40px 30px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 15px 30px rgba(0,0,0,0.2);
+    max-width:400px;
+    width:100%;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    z-index:10;
+  }
+  .success-box i {
+    font-size:70px; 
+    color:#28a745; 
+    margin-bottom:20px; 
+  }
+  .success-box h2 { margin-bottom:10px; font-size:26px; }
+  .success-box p { margin:5px 0; font-size:16px; color:#555; }
+  .back-btn {
+    display:inline-block;
+    margin-top:20px;
+    background:#d60055;
+    color:white;
+    padding:12px 25px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:500;
+    transition:0.3s;
+  }
+  .back-btn:hover{ background:#b00045; }
+
+  @media(max-width:600px){
+    .form-container{ padding:70px 20px 20px 20px; }
+    .help-icon{ top:-20px; right:20px; width:50px; height:50px; font-size:20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="form-container" id="formContainer">
+  <!-- হেল্পলাইন আইকন -->
+  <div class="help-icon" onclick="window.location.href='https://mrhonlineauthority.github.io/mrhhelplinehome'">
+    <i class="fa-solid fa-headset"></i>
+  </div>
+
+  <h2>অর্ডার ফর্ম</h2>
+  <form id="orderForm">
+    <div class="input-group"><label>নাম</label><input type="text" name="name" required></div>
+    <div class="input-group"><label>মোবাইল</label><input type="text" name="mobile" required></div>
+    <div class="input-group"><label>জেলা</label><input type="text" name="district" required></div>
+    <div class="input-group"><label>উপজেলা</label><input type="text" name="upazila" required></div>
+    <div class="input-group"><label>ডেলিভারি ঠিকানা</label><textarea name="address" required></textarea></div>
+    <div class="input-group"><label>কালার/সাইজ (অপশনাল)</label><input type="text" name="colorSize"></div>
+    <div class="input-group"><label>দাম</label><input type="text" name="price" required></div>
+    <div class="input-group">
+      <label>ডেলিভারি পেমেন্ট</label>
+      <select name="payment" required>
+        <option value="">একটি নির্বাচন করুন</option>
+        <option value="বিকাশ">বিকাশ</option>
+        <option value="নগদ">নগদ</option>
+      </select>
+    </div>
+    <div class="input-group"><label>প্রোডাক্ট লিংক (অপশনাল)</label><input type="text" name="productLink"></div>
+    <button type="submit" class="order-btn">অর্ডার করুন</button>
+  </form>
+</div>
+
+<!-- success box -->
+<div class="success-box" id="successBox">
+  <i class="fa-solid fa-circle-check"></i>
+  <h2>আপনার অর্ডার কনফার্ম হয়েছে!</h2>
+  <p>দয়া করে সেলারের সাথে যোগাযোগ করুন।</p>
+  <div id="orderDetails"></div>
+  <a href="#" class="back-btn" id="closeBtn">ফিরে যান</a>
+</div>
+
+<script>
+(function(){ emailjs.init("q5FOEaFMz8j-UzOMV"); })();
+
+document.getElementById("orderForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const form = this;
+
+  emailjs.sendForm("service_ua9oy2k", "template_qb7nnrv", form)
+  .then(() => {
+    document.getElementById("formContainer").style.display = "none";
+    const successBox = document.getElementById("successBox");
+    successBox.style.display = "block";
+
+    const formData = {};
+    new FormData(form).forEach((value,key) => formData[key] = value);
+    const detailsDiv = document.getElementById("orderDetails");
+    let html = `<p><strong>নাম:</strong> ${formData.name}</p>`;
+    html += `<p><strong>মোবাইল:</strong> ${formData.mobile}</p>`;
+    html += `<p><strong>জেলা:</strong> ${formData.district}</p>`;
+    html += `<p><strong>উপজেলা:</strong> ${formData.upazila}</p>`;
+    html += `<p><strong>ঠিকানা:</strong> ${formData.address}</p>`;
+    if(formData.colorSize) html += `<p><strong>কালার/সাইজ:</strong> ${formData.colorSize}</p>`;
+    html += `<p><strong>দাম:</strong> ${formData.price}</p>`;
+    html += `<p><strong>পেমেন্ট:</strong> ${formData.payment}</p>`;
+    if(formData.productLink) html += `<p><strong>প্রোডাক্ট লিংক:</strong> <a href="${formData.productLink}" target="_blank">${formData.productLink}</a></p>`;
+    detailsDiv.innerHTML = html;
+  }, (error) => {
+    alert("ইমেইল পাঠাতে সমস্যা হয়েছে:\n" + JSON.stringify(error));
+  });
+});
+
+document.getElementById("closeBtn").addEventListener("click", function(e){
+  e.preventDefault();
+  location.reload();
+});
+</script>
+
+</body>
+  </html>
