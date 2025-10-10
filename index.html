@@ -7,10 +7,9 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
-  /* Reset & Fonts */
   *{box-sizing:border-box;margin:0;padding:0;}
   body {
-    font-family: 'Times New Roman, times-new-roman;
+    font-family: 'Times New Roman', times-new-roman;
     background: linear-gradient(120deg, #ffe6f0, #f6f6f6);
     display: flex;
     justify-content: center;
@@ -18,8 +17,6 @@
     min-height: 100vh;
     padding: 20px;
   }
-
-  /* Form Card */
   .form-container {
     background: #fff;
     padding: 60px 30px 30px 30px;
@@ -34,15 +31,12 @@
     transform: translateY(-5px);
     box-shadow: 0 20px 35px rgba(0,0,0,0.25);
   }
-
   h2 {
     text-align: center;
     color: #d60055;
     margin-bottom: 30px;
     font-size: 28px;
   }
-
-  /* Input Group */
   .input-group { margin-bottom: 18px; }
   .input-group label {
     display: block;
@@ -68,8 +62,6 @@
     box-shadow: 0 0 8px rgba(214,0,85,0.3);
     outline: none;
   }
-
-  /* Button */
   .order-btn {
     background: #d60055;
     color: #fff;
@@ -86,8 +78,6 @@
     background: #b00045;
     transform: translateY(-2px);
   }
-
-  /* Help Icon */
   .help-icon {
     position: absolute;
     top: -25px;
@@ -109,8 +99,6 @@
     background: #b00045;
     transform: scale(1.15);
   }
-
-  /* Success Box */
   .success-box {
     display:none;
     background:white;
@@ -145,7 +133,6 @@
     transition:0.3s;
   }
   .back-btn:hover{ background:#b00045; }
-
   @media(max-width:600px){
     .form-container{ padding:70px 20px 20px 20px; }
     .help-icon{ top:-20px; right:20px; width:50px; height:50px; font-size:20px; }
@@ -155,7 +142,6 @@
 <body>
 
 <div class="form-container" id="formContainer">
-  <!-- হেল্পলাইন আইকন -->
   <div class="help-icon" onclick="window.location.href='https://mrhonlineauthority.github.io/mrhhelplinehome'">
     <i class="fa-solid fa-headset"></i>
   </div>
@@ -182,11 +168,9 @@
   </form>
 </div>
 
-<!-- success box -->
 <div class="success-box" id="successBox">
   <i class="fa-solid fa-circle-check"></i>
   <h2>আপনার অর্ডার কনফার্ম হয়েছে!</h2>
-  <p>দয়া করে সেলারের সাথে যোগাযোগ করুন।</p>
   <div id="orderDetails"></div>
   <a href="#" class="back-btn" id="closeBtn">ফিরে যান</a>
 </div>
@@ -194,9 +178,19 @@
 <script>
 (function(){ emailjs.init("q5FOEaFMz8j-UzOMV"); })();
 
+// অর্ডার নম্বর তৈরির ফাংশন (২০ ডিজিট)
+function generateOrderNumber(){
+  let num = '';
+  for(let i=0; i<20; i++){
+    num += Math.floor(Math.random() * 10);
+  }
+  return num;
+}
+
 document.getElementById("orderForm").addEventListener("submit", function(e){
   e.preventDefault();
   const form = this;
+  const orderNumber = generateOrderNumber(); // ✅ ২০ ডিজিটের অর্ডার নম্বর
 
   emailjs.sendForm("service_ua9oy2k", "template_qb7nnrv", form)
   .then(() => {
@@ -209,13 +203,7 @@ document.getElementById("orderForm").addEventListener("submit", function(e){
     const detailsDiv = document.getElementById("orderDetails");
     let html = `<p><strong>নাম:</strong> ${formData.name}</p>`;
     html += `<p><strong>মোবাইল:</strong> ${formData.mobile}</p>`;
-    html += `<p><strong>জেলা:</strong> ${formData.district}</p>`;
-    html += `<p><strong>উপজেলা:</strong> ${formData.upazila}</p>`;
-    html += `<p><strong>ঠিকানা:</strong> ${formData.address}</p>`;
-    if(formData.colorSize) html += `<p><strong>কালার/সাইজ:</strong> ${formData.colorSize}</p>`;
-    html += `<p><strong>ডেলিভারি চার্জ:</strong> ${formData.price}</p>`;
-    html += `<p><strong>পেমেন্ট:</strong> ${formData.payment}</p>`;
-    if(formData.productLink) html += `<p><strong>প্রোডাক্ট লিংক:</strong> <a href="${formData.productLink}" target="_blank">${formData.productLink}</a></p>`;
+    html += `<p><strong>অর্ডার নম্বর:</strong> ${orderNumber}</p>`;
     detailsDiv.innerHTML = html;
   }, (error) => {
     alert("ইমেইল পাঠাতে সমস্যা হয়েছে:\n" + JSON.stringify(error));
