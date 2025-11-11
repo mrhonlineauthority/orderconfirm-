@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M.R.H Subscription Now</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body {
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; background: linear-gradient(135deg,#ff85c1,#ffc2e0);
+      margin: 0; padding: 10px;
+    }
+    .container {
+      background: white; padding: 20px; border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      width: 100%; max-width: 400px; text-align: center;
+    }
+    h2 { color: #ff4081; margin-bottom: 20px; }
+    input {
+      width: 100%; padding: 10px; margin: 8px 0;
+      border: 1px solid #ccc; border-radius: 10px;
+      outline: none; transition: 0.3s;
+    }
+    input:focus { border-color: #ff4081; }
+    button {
+      background: #ff4081; color: white; border: none;
+      padding: 12px 0; width: 100%; border-radius: 10px;
+      font-size: 16px; cursor: pointer; transition: 0.3s;
+    }
+    button:hover { background: #e91e63; }
+    .message-box {
+      position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
+      background: white; padding: 20px; border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2); text-align: center;
+      transition: all 0.4s ease;
+    }
+    .message-box.active { top: 80px; }
+    .ok-btn {
+      background: #ff4081; border: none; color: white;
+      padding: 6px 15px; border-radius: 8px; margin-top: 10px; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>M.R.H Subscription Now</h2>
+    <form id="subscribeForm">
+      <input type="text" id="name" placeholder="Enter Your Name" required>
+      <input type="email" id="email" placeholder="Enter Your Email" required>
+      <input type="tel" id="phone" placeholder="Enter Your Phone No" required>
+      <input type="text" id="link" placeholder="Your Youtube/Facebook Link (Optional)">
+      <button type="submit">Subscribe</button>
+    </form>
+  </div>
+
+  <div class="message-box" id="messageBox">
+    <p id="messageText">Your Subscribe Request Successful</p>
+    <button class="ok-btn" id="okBtn">OK</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+    import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDep4oShhOTpuvlstEsIcns_GJSC1jSYM8",
+      authDomain: "allinfosite-de3de.firebaseapp.com",
+      projectId: "allinfosite-de3de",
+      storageBucket: "allinfosite-de3de.firebasestorage.app",
+      messagingSenderId: "912125641003",
+      appId: "1:912125641003:web:2f1e6e6d52ec502692c56e",
+      databaseURL: "https://allinfosite-de3de-default-rtdb.firebaseio.com/"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const form = document.getElementById("subscribeForm");
+    const messageBox = document.getElementById("messageBox");
+    const messageText = document.getElementById("messageText");
+    const okBtn = document.getElementById("okBtn");
+
+    // Function to make safe key
+    function makeKey(email, phone) {
+      const e = email.trim().toLowerCase().replace(/\./g,'__dot__').replace(/@/g,'__at__').replace(/[^a-z0-9_]/g,'');
+      const p = phone.trim().replace(/\D/g,'');
+      return `${e}__${p}`;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const link = document.getElementById("link").value.trim();
+
+      if (!name || !email || !phone) {
+        alert("Please fill Name, Email, and Phone No!");
+        return;
+      }
+
+      const key = makeKey(email, phone);
+
+      try {
+        const dbRef = ref(db);
+        const snapshot = await get(child(dbRef, "subscriptions/" + key));
+
+        if (snapshot.exists()) {
+          messageText.innerText = "This Email & Phone No already subscribed!";
+          messageBox.classList.add("active");
+          return;
+        }
+
+        await set(ref(db, "subscriptions/" + key), {
+          __key: key,
+          name,
+          email,
+          phone,
+          link: link || "N/A",
+          time: new Date().toLocaleString()
+        });
+
+        messageText.innerText = "Your Subscribe Request Successful";
+        messageBox.classList.add("active");
+
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
+    });
+
+    okBtn.addEventListener("click", () => {
+      messageBox.classList.remove("active");
+      form.reset();
+    });
+  </script>
+
+</body>
+</html>
