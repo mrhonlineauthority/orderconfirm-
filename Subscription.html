@@ -22,6 +22,31 @@
       border: 1px solid #ccc; border-radius: 10px;
       outline: none; transition: 0.3s;
     }
+   
+   /* 🔵 LOGO (NO EXTRA CIRCLE) */
+    .logo-box {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0 22px;
+    }
+
+    .logo-box img {
+      width: 95px;              /* একটু ছোট */
+      height: auto;
+      display: block;
+      object-fit: contain;      /* কোনো দাগ কাটা যাবে না */
+      image-rendering: auto;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      outline: none;
+    }
+   
     input:focus { border-color: #ff4081; }
     button {
       background: #ff4081; color: white; border: none;
@@ -46,6 +71,12 @@
 
   <div class="container">
     <h2>M.R.H Subscription Now</h2>
+    
+    <!-- ✅ ORIGINAL LOGO (NO EXTRA DESIGN) -->
+    <div class="logo-box">
+      <img src="https://mrhonlineauthority.github.io/ebent/mrhlogo.png" alt="MRH Logo">
+    </div>
+    
     <form id="subscribeForm">
       <input type="text" id="name" placeholder="Enter Your Name" required>
       <input type="email" id="email" placeholder="Enter Your Email" required>
